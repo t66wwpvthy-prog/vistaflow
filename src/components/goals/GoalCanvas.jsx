@@ -3,11 +3,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { INPUT_NODES } from './GoalData';
 
 const GOAL_ORBIT_POSITIONS = [
-  { angle: -75,  r: 165 },
-  { angle:   0,  r: 172 },
-  { angle:  75,  r: 162 },
-  { angle: 148,  r: 168 },
-  { angle: 220,  r: 162 },
+  { angle:  90,  r: 155 },
+  { angle:  20,  r: 162 },
+  { angle: 155,  r: 158 },
+  { angle: -30,  r: 155 },
+  { angle: 210,  r: 158 },
 ];
 
 const INPUT_ORBIT_POSITIONS = [
@@ -186,7 +186,7 @@ export default function GoalCanvas({
   height = 450,
 }) {
   const cx = width / 2;
-  const cy = height / 2 + 60;
+  const cy = height / 2 - 20;
 
   const visibleGoals = goals.slice(0, 5);
   const selectedGoal = goals.find(g => g.id === selectedGoalId);
