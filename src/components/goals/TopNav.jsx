@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const NAV_ITEMS = [
-  { label: 'Household', path: '/' },
+  { label: 'Household', path: '/household' },
   { label: 'Goals',     path: '/goals' },
   { label: 'Scenarios', path: '/scenarios' },
   { label: 'Sequencing',path: '/sequencing' },
