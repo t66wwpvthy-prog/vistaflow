@@ -327,15 +327,15 @@ export default function GoalCanvas({
         <AnimatePresence>
           {showInputNodes && selectedGoalPos && INPUT_ORBIT_POSITIONS.map((ip, i) => {
             const node = INPUT_NODES[i];
-            if (!node) return null;
-            const ipos = toXY(ip.angle, ip.r, selectedGoalPos.x, selectedGoalPos.y);
+            if (!node || node.locked) return null;
+            const ipos = toXY(ip.angle, ip.r * 0.82, selectedGoalPos.x, selectedGoalPos.y);
             return (
               <InputNode key={node.id} node={node} pos={ipos} index={i}
                 originX={selectedGoalPos.x} originY={selectedGoalPos.y}
                 isHighlighted={highlightedField === node.id}
                 onClick={() => onHighlightField(node.id === highlightedField ? null : node.id)}
                 selectedGoal={selectedGoal}
-                chipW={scale * 0.13} chipH={scale * 0.05}
+                chipW={scale * 0.115} chipH={scale * 0.045}
               />
             );
           })}
