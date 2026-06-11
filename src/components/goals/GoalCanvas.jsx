@@ -190,7 +190,11 @@ export default function GoalCanvas({
   const cy = height / 2;
   const scale = Math.min(width, height);
 
-  const GOAL_ORBIT_POSITIONS = GOAL_ORBIT_BASE.map(p => ({ angle: p.angle, r: p.r * scale }));
+  const slotCount = Math.min(goals.length + (goals.length < 5 ? 1 : 0), 5);
+  const GOAL_ORBIT_POSITIONS = GOAL_ORBIT_BASE.map((p, i) => ({
+    angle: -90 + (i * 360) / Math.max(slotCount, 1),
+    r: p.r * scale,
+  }));
   const INPUT_ORBIT_POSITIONS = INPUT_ORBIT_BASE.map(p => ({ angle: p.angle, r: p.r * scale }));
 
   const visibleGoals = goals.slice(0, 5);
