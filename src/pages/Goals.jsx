@@ -147,6 +147,7 @@ export default function Goals() {
                   onAddGoal={handleAddGoal}
                   highlightedField={highlightedField}
                   onHighlightField={setHighlightedField}
+                  onGoalChange={handleGoalChange}
                   width={560}
                   height={560}
                 />

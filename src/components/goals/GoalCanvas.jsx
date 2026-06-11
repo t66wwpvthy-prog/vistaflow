@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { INPUT_NODES } from './GoalData';
+import GoalEditPopup from './GoalEditPopup';
 
 const GOAL_ORBIT_POSITIONS = [
   { angle:  90,  r: 155 },
@@ -26,7 +27,6 @@ const toXY = (angle, r, cx, cy) => {
   return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
 };
 
-// Spring presets
 const SPRING_SOFT = { type: 'spring', stiffness: 220, damping: 22, mass: 0.8 };
 const SPRING_BLOOM = { type: 'spring', stiffness: 260, damping: 20, mass: 0.6 };
 
@@ -50,7 +50,6 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
       style={{ cursor: 'pointer' }}
       onClick={onClick}
     >
-      {/* Ambient ripple ring — only when selected, animates in */}
       <AnimatePresence>
         {isSelected && (
           <motion.circle
@@ -66,7 +65,6 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
         )}
       </AnimatePresence>
 
-      {/* Main circle */}
       <motion.circle
         cx={pos.x} cy={pos.y} r={36}
         fill={isSelected ? 'hsl(28 14% 13%)' : 'hsl(28 12% 10%)'}
@@ -80,7 +78,6 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
         transition={{ duration: 0.4, ease: 'easeOut' }}
       />
 
-      {/* Inner glow ring when selected */}
       <AnimatePresence>
         {isSelected && (
           <motion.circle
@@ -127,8 +124,6 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
 
 function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY }) {
   const locked = node.locked;
-
-  // Each node blooms outward from the parent goal position
   const dx = pos.x - originX;
   const dy = pos.y - originY;
   const dist = Math.sqrt(dx * dx + dy * dy) || 1;
@@ -182,9 +177,14 @@ export default function GoalCanvas({
   onAddGoal,
   highlightedField,
   onHighlightField,
+  onGoalChange,
   width = 580,
   height = 450,
 }) {
+  const svgRef = useRef(null);
+  const [popupGoal, setPopupGoal] = useState(null);
+  const [popupPos, setPopupPos] = useState(null);
+
   const cx = width / 2;
   const cy = height / 2 - 80;
 
@@ -197,121 +197,146 @@ export default function GoalCanvas({
         .find(({ goal }) => goal?.id === selectedGoalId)?.pos
     : null;
 
+  const handleGoalClick = (goal, pos) => {
+    onSelectGoal(goal.id);
+    if (popupGoal?.id === goal.id) {
+      setPopupGoal(null);
+    } else {
+      setPopupGoal(goal);
+      setPopupPos(pos);
+    }
+  };
+
   return (
-    <svg width={width} height={height} style={{ overflow: 'visible' }}>
-      <defs>
-        <radialGradient id="rootGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="hsl(38 50% 58%)" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="hsl(38 50% 58%)" stopOpacity="0" />
-        </radialGradient>
-        <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="hsl(38 50% 58%)" stopOpacity="0.06" />
-          <stop offset="100%" stopColor="hsl(38 50% 58%)" stopOpacity="0" />
-        </radialGradient>
-      </defs>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <svg ref={svgRef} width={width} height={height} style={{ overflow: 'visible' }}>
+        <defs>
+          <radialGradient id="rootGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(38 50% 58%)" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="hsl(38 50% 58%)" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="hsl(38 50% 58%)" stopOpacity="0.06" />
+            <stop offset="100%" stopColor="hsl(38 50% 58%)" stopOpacity="0" />
+          </radialGradient>
+        </defs>
 
-      <circle cx={cx} cy={cy} r={200} fill="url(#centerGlow)" />
+        <circle cx={cx} cy={cy} r={200} fill="url(#centerGlow)" />
 
-      {/* Root → goal connection lines */}
-      {visibleGoals.map((goal, i) => {
-        const pos = toXY(GOAL_ORBIT_POSITIONS[i].angle, GOAL_ORBIT_POSITIONS[i].r, cx, cy);
-        return (
-          <ConnectionLine key={goal.id + '-line'}
-            x1={cx} y1={cy} x2={pos.x} y2={pos.y}
-            active={goal.id === selectedGoalId}
-          />
-        );
-      })}
-
-      {/* Selected goal → input node connection lines */}
-      <AnimatePresence>
-        {showInputNodes && selectedGoalPos && INPUT_ORBIT_POSITIONS.map((ip, i) => {
-          const ipos = toXY(ip.angle, ip.r, selectedGoalPos.x, selectedGoalPos.y);
-          const node = INPUT_NODES[i];
+        {/* Root → goal connection lines */}
+        {visibleGoals.map((goal, i) => {
+          const pos = toXY(GOAL_ORBIT_POSITIONS[i].angle, GOAL_ORBIT_POSITIONS[i].r, cx, cy);
           return (
-            <motion.line key={node.id + '-iline'}
-              x1={selectedGoalPos.x} y1={selectedGoalPos.y}
-              x2={ipos.x} y2={ipos.y}
-              stroke={node.locked ? 'hsl(38 15% 28% / 0.18)' : 'hsl(38 35% 45% / 0.28)'}
-              strokeWidth={0.7}
-              strokeDasharray={node.locked ? '2 4' : undefined}
-              initial={{ opacity: 0, pathLength: 0 }}
-              animate={{ opacity: 1, pathLength: 1 }}
-              exit={{ opacity: 0, pathLength: 0 }}
-              transition={{ duration: 0.35, delay: i * 0.025, ease: 'easeOut' }}
+            <ConnectionLine key={goal.id + '-line'}
+              x1={cx} y1={cy} x2={pos.x} y2={pos.y}
+              active={goal.id === selectedGoalId}
             />
           );
         })}
-      </AnimatePresence>
 
-      {/* Root node */}
-      <circle cx={cx} cy={cy} r={72} fill="url(#rootGlow)" />
-      <circle cx={cx} cy={cy} r={80} fill="none" stroke="hsl(38 30% 30% / 0.08)" strokeWidth={12} />
-      <circle cx={cx} cy={cy} r={46}
-        fill="hsl(28 14% 11%)"
-        stroke="hsl(38 50% 58% / 0.5)"
-        strokeWidth={1.5}
-        style={{ filter: 'drop-shadow(0 0 20px hsl(38 50% 58% / 0.16))' }}
-      />
-      <circle cx={cx} cy={cy} r={50} fill="none" stroke="hsl(38 50% 58% / 0.09)" strokeWidth={6} />
-      <text x={cx} y={cy - 5} textAnchor="middle" fontSize="12" fill="hsl(38 55% 64%)"
-        fontFamily="Cormorant Garamond, Georgia, serif" fontWeight={500}>
-        {lifeArea?.icon || '✦'}
-      </text>
-      <text x={cx} y={cy + 11} textAnchor="middle" fontSize="8.5" fill="hsl(38 18% 58%)"
-        fontFamily="Inter, sans-serif" letterSpacing="0.14em">
-        {lifeArea?.label?.toUpperCase() || ''}
-      </text>
+        {/* Selected goal → input node connection lines */}
+        <AnimatePresence>
+          {showInputNodes && selectedGoalPos && INPUT_ORBIT_POSITIONS.map((ip, i) => {
+            const ipos = toXY(ip.angle, ip.r, selectedGoalPos.x, selectedGoalPos.y);
+            const node = INPUT_NODES[i];
+            return (
+              <motion.line key={node.id + '-iline'}
+                x1={selectedGoalPos.x} y1={selectedGoalPos.y}
+                x2={ipos.x} y2={ipos.y}
+                stroke={node.locked ? 'hsl(38 15% 28% / 0.18)' : 'hsl(38 35% 45% / 0.28)'}
+                strokeWidth={0.7}
+                strokeDasharray={node.locked ? '2 4' : undefined}
+                initial={{ opacity: 0, pathLength: 0 }}
+                animate={{ opacity: 1, pathLength: 1 }}
+                exit={{ opacity: 0, pathLength: 0 }}
+                transition={{ duration: 0.35, delay: i * 0.025, ease: 'easeOut' }}
+              />
+            );
+          })}
+        </AnimatePresence>
 
-      {/* Goal nodes */}
-      {visibleGoals.map((goal, i) => {
-        const pos = toXY(GOAL_ORBIT_POSITIONS[i].angle, GOAL_ORBIT_POSITIONS[i].r, cx, cy);
-        return (
-          <GoalNode key={goal.id} goal={goal} pos={pos} index={i}
-            isSelected={goal.id === selectedGoalId}
-            onClick={() => onSelectGoal(goal.id)}
-          />
-        );
-      })}
+        {/* Root node */}
+        <circle cx={cx} cy={cy} r={72} fill="url(#rootGlow)" />
+        <circle cx={cx} cy={cy} r={80} fill="none" stroke="hsl(38 30% 30% / 0.08)" strokeWidth={12} />
+        <circle cx={cx} cy={cy} r={46}
+          fill="hsl(28 14% 11%)"
+          stroke="hsl(38 50% 58% / 0.5)"
+          strokeWidth={1.5}
+          style={{ filter: 'drop-shadow(0 0 20px hsl(38 50% 58% / 0.16))' }}
+        />
+        <circle cx={cx} cy={cy} r={50} fill="none" stroke="hsl(38 50% 58% / 0.09)" strokeWidth={6} />
+        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="12" fill="hsl(38 55% 64%)"
+          fontFamily="Cormorant Garamond, Georgia, serif" fontWeight={500}>
+          {lifeArea?.icon || '✦'}
+        </text>
+        <text x={cx} y={cy + 11} textAnchor="middle" fontSize="8.5" fill="hsl(38 18% 58%)"
+          fontFamily="Inter, sans-serif" letterSpacing="0.14em">
+          {lifeArea?.label?.toUpperCase() || ''}
+        </text>
 
-      {/* Add goal node */}
-      {visibleGoals.length < 5 && (() => {
-        const idx = visibleGoals.length;
-        const pos = toXY(GOAL_ORBIT_POSITIONS[idx].angle, GOAL_ORBIT_POSITIONS[idx].r, cx, cy);
-        return (
-          <motion.g key="add-node"
-            initial={{ opacity: 0 }} animate={{ opacity: 0.6 }}
-            whileHover={{ opacity: 1 }}
-            style={{ cursor: 'pointer' }} onClick={onAddGoal}>
-            <ConnectionLine x1={cx} y1={cy} x2={pos.x} y2={pos.y} active={false} dim />
-            <circle cx={pos.x} cy={pos.y} r={26}
-              fill="hsl(28 10% 10%)"
-              stroke="hsl(38 30% 35% / 0.4)"
-              strokeWidth={0.8}
-              strokeDasharray="3 3"
-            />
-            <text x={pos.x} y={pos.y + 4} textAnchor="middle" fontSize="14"
-              fill="hsl(38 40% 50%)" fontFamily="Inter, sans-serif">+</text>
-          </motion.g>
-        );
-      })()}
-
-      {/* Input nodes around selected goal */}
-      <AnimatePresence>
-        {showInputNodes && selectedGoalPos && INPUT_ORBIT_POSITIONS.map((ip, i) => {
-          const node = INPUT_NODES[i];
-          if (!node) return null;
-          const ipos = toXY(ip.angle, ip.r, selectedGoalPos.x, selectedGoalPos.y);
+        {/* Goal nodes */}
+        {visibleGoals.map((goal, i) => {
+          const pos = toXY(GOAL_ORBIT_POSITIONS[i].angle, GOAL_ORBIT_POSITIONS[i].r, cx, cy);
           return (
-            <InputNode key={node.id} node={node} pos={ipos} index={i}
-              originX={selectedGoalPos.x} originY={selectedGoalPos.y}
-              isHighlighted={highlightedField === node.id}
-              onClick={() => onHighlightField(node.id === highlightedField ? null : node.id)}
-              selectedGoal={selectedGoal}
+            <GoalNode key={goal.id} goal={goal} pos={pos} index={i}
+              isSelected={goal.id === selectedGoalId}
+              onClick={() => handleGoalClick(goal, pos)}
             />
           );
         })}
-      </AnimatePresence>
-    </svg>
+
+        {/* Add goal node */}
+        {visibleGoals.length < 5 && (() => {
+          const idx = visibleGoals.length;
+          const pos = toXY(GOAL_ORBIT_POSITIONS[idx].angle, GOAL_ORBIT_POSITIONS[idx].r, cx, cy);
+          return (
+            <motion.g key="add-node"
+              initial={{ opacity: 0 }} animate={{ opacity: 0.6 }}
+              whileHover={{ opacity: 1 }}
+              style={{ cursor: 'pointer' }} onClick={onAddGoal}>
+              <ConnectionLine x1={cx} y1={cy} x2={pos.x} y2={pos.y} active={false} dim />
+              <circle cx={pos.x} cy={pos.y} r={26}
+                fill="hsl(28 10% 10%)"
+                stroke="hsl(38 30% 35% / 0.4)"
+                strokeWidth={0.8}
+                strokeDasharray="3 3"
+              />
+              <text x={pos.x} y={pos.y + 4} textAnchor="middle" fontSize="14"
+                fill="hsl(38 40% 50%)" fontFamily="Inter, sans-serif">+</text>
+            </motion.g>
+          );
+        })()}
+
+        {/* Input nodes around selected goal */}
+        <AnimatePresence>
+          {showInputNodes && selectedGoalPos && INPUT_ORBIT_POSITIONS.map((ip, i) => {
+            const node = INPUT_NODES[i];
+            if (!node) return null;
+            const ipos = toXY(ip.angle, ip.r, selectedGoalPos.x, selectedGoalPos.y);
+            return (
+              <InputNode key={node.id} node={node} pos={ipos} index={i}
+                originX={selectedGoalPos.x} originY={selectedGoalPos.y}
+                isHighlighted={highlightedField === node.id}
+                onClick={() => onHighlightField(node.id === highlightedField ? null : node.id)}
+                selectedGoal={selectedGoal}
+              />
+            );
+          })}
+        </AnimatePresence>
+      </svg>
+
+      {popupGoal && popupPos && (
+        <GoalEditPopup
+          goal={popupGoal}
+          pos={popupPos}
+          svgRef={svgRef}
+          onSave={(updated) => {
+            if (onGoalChange) onGoalChange(updated);
+            setPopupGoal(null);
+          }}
+          onClose={() => setPopupGoal(null)}
+        />
+      )}
+    </div>
   );
 }
