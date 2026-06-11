@@ -186,7 +186,7 @@ export default function GoalCanvas({
   height = 450,
 }) {
   const cx = width / 2;
-  const cy = height / 2;
+  const cy = height / 2 + 60;
 
   const visibleGoals = goals.slice(0, 5);
   const selectedGoal = goals.find(g => g.id === selectedGoalId);
