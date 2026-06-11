@@ -187,8 +187,8 @@ export default function GoalCanvas({
   const [popupPos, setPopupPos] = useState(null);
 
   const cx = width / 2;
-  const cy = height / 2;
-  const scale = Math.min(width, height);
+  const cy = height * 0.5;
+  const scale = Math.min(width * 0.72, height * 0.86);
 
   const slotCount = Math.min(goals.length + (goals.length < 5 ? 1 : 0), 5);
   const GOAL_ORBIT_POSITIONS = GOAL_ORBIT_BASE.map((p, i) => ({
