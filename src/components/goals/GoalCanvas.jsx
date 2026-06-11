@@ -3,23 +3,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { INPUT_NODES } from './GoalData';
 import GoalEditPopup from './GoalEditPopup';
 
-const GOAL_ORBIT_POSITIONS = [
-  { angle:  90,  r: 155 },
-  { angle:  20,  r: 162 },
-  { angle: 155,  r: 158 },
-  { angle: -30,  r: 155 },
-  { angle: 210,  r: 158 },
+const GOAL_ORBIT_BASE = [
+  { angle:  90,  r: 0.30 },
+  { angle:  20,  r: 0.31 },
+  { angle: 155,  r: 0.30 },
+  { angle: -30,  r: 0.30 },
+  { angle: 210,  r: 0.30 },
 ];
 
-const INPUT_ORBIT_POSITIONS = [
-  { angle: -105, r: 95 },
-  { angle:  -52, r: 102 },
-  { angle:    5, r: 96 },
-  { angle:   60, r: 102 },
-  { angle:  115, r: 95 },
-  { angle:  168, r: 102 },
-  { angle:  224, r: 90 },
-  { angle:  278, r: 95 },
+const INPUT_ORBIT_BASE = [
+  { angle: -105, r: 0.18 },
+  { angle:  -52, r: 0.19 },
+  { angle:    5, r: 0.18 },
+  { angle:   60, r: 0.19 },
+  { angle:  115, r: 0.18 },
+  { angle:  168, r: 0.19 },
+  { angle:  224, r: 0.17 },
+  { angle:  278, r: 0.18 },
 ];
 
 const toXY = (angle, r, cx, cy) => {
@@ -41,7 +41,7 @@ function ConnectionLine({ x1, y1, x2, y2, active, dim }) {
   );
 }
 
-function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
+function GoalNode({ goal, pos, isSelected, onClick, isNew, index, nodeR = 36 }) {
   return (
     <motion.g
       initial={{ opacity: 0, scale: 0.5, x: 0, y: 0 }}
@@ -53,10 +53,10 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
       <AnimatePresence>
         {isSelected && (
           <motion.circle
-            cx={pos.x} cy={pos.y} r={46}
+            cx={pos.x} cy={pos.y} r={nodeR * 1.28}
             fill="none"
             stroke="hsl(38 50% 58% / 0.06)"
-            strokeWidth={14}
+            strokeWidth={nodeR * 0.38}
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 1.15, opacity: 0 }}
@@ -66,7 +66,7 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
       </AnimatePresence>
 
       <motion.circle
-        cx={pos.x} cy={pos.y} r={36}
+        cx={pos.x} cy={pos.y} r={nodeR}
         fill={isSelected ? 'hsl(28 14% 13%)' : 'hsl(28 12% 10%)'}
         stroke={isSelected ? 'hsl(38 50% 58% / 0.65)' : 'hsl(38 18% 28% / 0.5)'}
         strokeWidth={isSelected ? 1.5 : 0.8}
@@ -81,10 +81,10 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
       <AnimatePresence>
         {isSelected && (
           <motion.circle
-            cx={pos.x} cy={pos.y} r={39}
+            cx={pos.x} cy={pos.y} r={nodeR * 1.08}
             fill="none"
             stroke="hsl(38 50% 58% / 0.12)"
-            strokeWidth={5}
+            strokeWidth={nodeR * 0.14}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 1.1, opacity: 0 }}
@@ -93,9 +93,9 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
         )}
       </AnimatePresence>
 
-      <foreignObject x={pos.x - 34} y={pos.y - 20} width={68} height={40} style={{ pointerEvents: 'none' }}>
+      <foreignObject x={pos.x - nodeR} y={pos.y - nodeR * 0.56} width={nodeR * 2} height={nodeR * 1.12} style={{ pointerEvents: 'none' }}>
         <div xmlns="http://www.w3.org/1999/xhtml" style={{
-          textAlign: 'center', fontSize: '12px', fontWeight: 500,
+          textAlign: 'center', fontSize: `${nodeR * 0.33}px`, fontWeight: 500,
           color: isSelected ? 'hsl(38 65% 72%)' : 'hsl(38 18% 68%)',
           lineHeight: '1.3', fontFamily: 'Inter, sans-serif',
           letterSpacing: '0.01em',
@@ -110,8 +110,8 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
 
       {goal && goal.ageStart && !isNew && (
         <text
-          x={pos.x} y={pos.y + 32}
-          textAnchor="middle" fontSize="10"
+          x={pos.x} y={pos.y + nodeR + nodeR * 0.3}
+          textAnchor="middle" fontSize={nodeR * 0.28}
           fill="hsl(38 20% 42%)"
           fontFamily="Courier Prime, monospace"
         >
@@ -122,13 +122,14 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
   );
 }
 
-function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY }) {
+function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY, chipW = 68, chipH = 26 }) {
   const locked = node.locked;
   const dx = pos.x - originX;
   const dy = pos.y - originY;
   const dist = Math.sqrt(dx * dx + dy * dy) || 1;
   const initX = -(dx / dist) * 28;
   const initY = -(dy / dist) * 28;
+  const fs = Math.max(10, chipH * 0.42);
 
   return (
     <motion.g
@@ -138,7 +139,7 @@ function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY 
       transition={{ ...SPRING_BLOOM, delay: index * 0.035 }}
     >
       <motion.rect
-        x={pos.x - 34} y={pos.y - 13} width={68} height={26} rx={13}
+        x={pos.x - chipW / 2} y={pos.y - chipH / 2} width={chipW} height={chipH} rx={chipH / 2}
         fill={isHighlighted ? 'hsl(38 30% 18%)' : 'hsl(28 10% 13%)'}
         stroke={isHighlighted ? 'hsl(38 50% 55% / 0.7)' : locked ? 'hsl(38 15% 25% / 0.4)' : 'hsl(38 20% 28% / 0.5)'}
         strokeWidth={isHighlighted ? 1 : 0.75}
@@ -153,11 +154,11 @@ function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY 
         onClick={!locked ? onClick : undefined}
       />
       {locked && (
-        <text x={pos.x - 18} y={pos.y + 5} fontSize="9" fill="hsl(38 20% 38%)" fontFamily="Inter, sans-serif">⬡</text>
+        <text x={pos.x - chipW * 0.26} y={pos.y + fs * 0.38} fontSize={fs * 0.8} fill="hsl(38 20% 38%)" fontFamily="Inter, sans-serif">⬡</text>
       )}
       <text
-        x={locked ? pos.x - 4 : pos.x} y={pos.y + 5}
-        textAnchor="middle" fontSize="11"
+        x={locked ? pos.x + chipW * 0.06 : pos.x} y={pos.y + fs * 0.38}
+        textAnchor="middle" fontSize={fs}
         fill={isHighlighted ? 'hsl(38 60% 68%)' : locked ? 'hsl(38 15% 40%)' : 'hsl(38 15% 58%)'}
         fontFamily="Inter, sans-serif"
         fontWeight={isHighlighted ? 600 : 400}
@@ -187,6 +188,10 @@ export default function GoalCanvas({
 
   const cx = width / 2;
   const cy = height / 2;
+  const scale = Math.min(width, height);
+
+  const GOAL_ORBIT_POSITIONS = GOAL_ORBIT_BASE.map(p => ({ angle: p.angle, r: p.r * scale }));
+  const INPUT_ORBIT_POSITIONS = INPUT_ORBIT_BASE.map(p => ({ angle: p.angle, r: p.r * scale }));
 
   const visibleGoals = goals.slice(0, 5);
   const selectedGoal = goals.find(g => g.id === selectedGoalId);
@@ -256,29 +261,35 @@ export default function GoalCanvas({
         </AnimatePresence>
 
         {/* Root node */}
-        <circle cx={cx} cy={cy} r={72} fill="url(#rootGlow)" />
-        <circle cx={cx} cy={cy} r={80} fill="none" stroke="hsl(38 30% 30% / 0.08)" strokeWidth={12} />
-        <circle cx={cx} cy={cy} r={46}
-          fill="hsl(28 14% 11%)"
-          stroke="hsl(38 50% 58% / 0.5)"
-          strokeWidth={1.5}
-          style={{ filter: 'drop-shadow(0 0 20px hsl(38 50% 58% / 0.16))' }}
-        />
-        <circle cx={cx} cy={cy} r={50} fill="none" stroke="hsl(38 50% 58% / 0.09)" strokeWidth={6} />
-        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="16" fill="hsl(38 55% 64%)"
-          fontFamily="Cormorant Garamond, Georgia, serif" fontWeight={500}>
-          {lifeArea?.icon || '✦'}
-        </text>
-        <text x={cx} y={cy + 14} textAnchor="middle" fontSize="11" fill="hsl(38 18% 58%)"
-          fontFamily="Inter, sans-serif" letterSpacing="0.14em">
-          {lifeArea?.label?.toUpperCase() || ''}
-        </text>
+        {(() => {
+          const rr = scale * 0.09;
+          return <>
+            <circle cx={cx} cy={cy} r={rr * 1.56} fill="url(#rootGlow)" />
+            <circle cx={cx} cy={cy} r={rr * 1.74} fill="none" stroke="hsl(38 30% 30% / 0.08)" strokeWidth={rr * 0.26} />
+            <circle cx={cx} cy={cy} r={rr}
+              fill="hsl(28 14% 11%)"
+              stroke="hsl(38 50% 58% / 0.5)"
+              strokeWidth={1.5}
+              style={{ filter: 'drop-shadow(0 0 20px hsl(38 50% 58% / 0.16))' }}
+            />
+            <circle cx={cx} cy={cy} r={rr * 1.09} fill="none" stroke="hsl(38 50% 58% / 0.09)" strokeWidth={rr * 0.13} />
+            <text x={cx} y={cy - rr * 0.1} textAnchor="middle" fontSize={rr * 0.35} fill="hsl(38 55% 64%)"
+              fontFamily="Cormorant Garamond, Georgia, serif" fontWeight={500}>
+              {lifeArea?.icon || '✦'}
+            </text>
+            <text x={cx} y={cy + rr * 0.35} textAnchor="middle" fontSize={rr * 0.24} fill="hsl(38 18% 58%)"
+              fontFamily="Inter, sans-serif" letterSpacing="0.14em">
+              {lifeArea?.label?.toUpperCase() || ''}
+            </text>
+          </>;
+        })()}
 
         {/* Goal nodes */}
         {visibleGoals.map((goal, i) => {
           const pos = toXY(GOAL_ORBIT_POSITIONS[i].angle, GOAL_ORBIT_POSITIONS[i].r, cx, cy);
           return (
             <GoalNode key={goal.id} goal={goal} pos={pos} index={i}
+              nodeR={scale * 0.07}
               isSelected={goal.id === selectedGoalId}
               onClick={() => handleGoalClick(goal, pos)}
             />
@@ -289,19 +300,20 @@ export default function GoalCanvas({
         {visibleGoals.length < 5 && (() => {
           const idx = visibleGoals.length;
           const pos = toXY(GOAL_ORBIT_POSITIONS[idx].angle, GOAL_ORBIT_POSITIONS[idx].r, cx, cy);
+          const addR = scale * 0.05;
           return (
             <motion.g key="add-node"
               initial={{ opacity: 0 }} animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               style={{ cursor: 'pointer' }} onClick={onAddGoal}>
               <ConnectionLine x1={cx} y1={cy} x2={pos.x} y2={pos.y} active={false} dim />
-              <circle cx={pos.x} cy={pos.y} r={26}
+              <circle cx={pos.x} cy={pos.y} r={addR}
                 fill="hsl(28 10% 10%)"
                 stroke="hsl(38 30% 35% / 0.4)"
                 strokeWidth={0.8}
                 strokeDasharray="3 3"
               />
-              <text x={pos.x} y={pos.y + 4} textAnchor="middle" fontSize="14"
+              <text x={pos.x} y={pos.y + addR * 0.16} textAnchor="middle" fontSize={addR * 0.55}
                 fill="hsl(38 40% 50%)" fontFamily="Inter, sans-serif">+</text>
             </motion.g>
           );
@@ -319,6 +331,7 @@ export default function GoalCanvas({
                 isHighlighted={highlightedField === node.id}
                 onClick={() => onHighlightField(node.id === highlightedField ? null : node.id)}
                 selectedGoal={selectedGoal}
+                chipW={scale * 0.13} chipH={scale * 0.05}
               />
             );
           })}
