@@ -154,7 +154,7 @@ export default function Goals() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                style={{ position: 'relative', zIndex: 1 }}
+                style={{ position: 'absolute', inset: 0, zIndex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
                 <GoalCanvas
                   lifeArea={lifeArea}
