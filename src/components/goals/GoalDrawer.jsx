@@ -14,7 +14,7 @@ const fieldMap = {
 function FieldLabel({ label, highlighted }) {
   return (
     <div style={{
-      fontSize: '9px',
+      fontSize: '11px',
       letterSpacing: '0.13em',
       textTransform: 'uppercase',
       color: highlighted ? 'hsl(38 55% 62%)' : 'hsl(38 15% 45%)',
@@ -41,7 +41,7 @@ function StyledInput({ value, onChange, type = 'text', placeholder, highlighted,
         border: `1px solid ${highlighted ? 'hsl(38 45% 45% / 0.6)' : 'hsl(28 10% 22% / 0.6)'}`,
         borderRadius: '3px',
         padding: '6px 8px',
-        fontSize: '12px',
+        fontSize: '14px',
         color: 'hsl(38 18% 78%)',
         fontFamily: 'Inter, sans-serif',
         outline: 'none',
@@ -66,7 +66,7 @@ function StyledSelect({ value, onChange, options, highlighted }) {
         border: `1px solid ${highlighted ? 'hsl(38 45% 45% / 0.6)' : 'hsl(28 10% 22% / 0.6)'}`,
         borderRadius: '3px',
         padding: '6px 8px',
-        fontSize: '12px',
+        fontSize: '14px',
         color: 'hsl(38 18% 78%)',
         fontFamily: 'Inter, sans-serif',
         outline: 'none',
@@ -94,7 +94,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
     return (
       <div className="flex flex-col h-full items-center justify-center" style={{ opacity: 0.35 }}>
         <div style={{ fontSize: '28px', marginBottom: '12px', color: 'hsl(38 30% 45%)' }}>◎</div>
-        <div style={{ fontSize: '11px', letterSpacing: '0.08em', color: 'hsl(38 12% 45%)', fontFamily: 'Inter, sans-serif' }}>
+        <div style={{ fontSize: '13px', letterSpacing: '0.08em', color: 'hsl(38 12% 45%)', fontFamily: 'Inter, sans-serif' }}>
           Select a goal
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
               width: '100%', background: 'transparent',
               border: 'none', borderBottom: '1px solid hsl(38 30% 32% / 0.5)',
               padding: '2px 0 6px',
-              fontSize: '17px',
+              fontSize: '20px',
               fontFamily: 'Cormorant Garamond, Georgia, serif',
               fontWeight: 400,
               color: 'hsl(38 25% 82%)',
@@ -135,7 +135,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
         {/* Life area badge */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{
-            fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase',
+            fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase',
             color: 'hsl(38 35% 48%)', fontFamily: 'Inter, sans-serif',
           }}>{area?.icon} {area?.label}</span>
         </div>
@@ -176,7 +176,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
                 background: isHighlighted('amount') ? 'hsl(38 20% 14%)' : 'hsl(28 10% 12%)',
                 border: `1px solid ${isHighlighted('amount') ? 'hsl(38 45% 45% / 0.6)' : 'hsl(28 10% 22% / 0.6)'}`,
                 borderRadius: '3px', padding: '6px 8px 6px 20px',
-                fontSize: '12px', color: 'hsl(38 18% 78%)',
+                fontSize: '14px', color: 'hsl(38 18% 78%)',
                 fontFamily: 'Courier Prime, monospace', outline: 'none',
                 transition: 'border-color 0.2s, background 0.2s',
               }}
@@ -221,7 +221,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
               background: 'hsl(28 10% 12%)',
               border: '1px solid hsl(28 10% 22% / 0.6)',
               borderRadius: '3px', padding: '6px 8px',
-              fontSize: '11px', color: 'hsl(38 15% 65%)',
+              fontSize: '13px', color: 'hsl(38 15% 65%)',
               fontFamily: 'Inter, sans-serif', outline: 'none',
               lineHeight: '1.5',
             }}
@@ -237,8 +237,8 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
               border: '1px dashed hsl(38 15% 25% / 0.5)',
               opacity: 0.5,
             }}>
-              <span style={{ fontSize: '8px', color: 'hsl(38 20% 40%)' }}>⬡</span>
-              <span style={{ fontSize: '9px', color: 'hsl(38 15% 40%)', fontFamily: 'Inter, sans-serif', letterSpacing: '0.04em' }}>{label}</span>
+              <span style={{ fontSize: '10px', color: 'hsl(38 20% 40%)' }}>⬡</span>
+              <span style={{ fontSize: '11px', color: 'hsl(38 15% 40%)', fontFamily: 'Inter, sans-serif', letterSpacing: '0.04em' }}>{label}</span>
             </div>
           ))}
         </div>
@@ -249,7 +249,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
             width: '100%', padding: '9px',
             background: 'hsl(38 45% 50%)',
             border: 'none', borderRadius: '3px', cursor: 'pointer',
-            fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase',
+            fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase',
             color: 'hsl(28 15% 10%)', fontFamily: 'Inter, sans-serif', fontWeight: 600,
             transition: 'background 0.2s',
           }}
@@ -262,7 +262,7 @@ export default function GoalDrawer({ goal, lifeAreaId, highlightedField, onChang
             width: '100%', padding: '8px',
             background: 'transparent',
             border: '1px solid hsl(38 20% 28% / 0.6)', borderRadius: '3px', cursor: 'pointer',
-            fontSize: '10px', letterSpacing: '0.1em', textTransform: 'uppercase',
+            fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase',
             color: 'hsl(38 15% 55%)', fontFamily: 'Inter, sans-serif', fontWeight: 500,
             transition: 'border-color 0.2s, color 0.2s',
           }}

@@ -160,7 +160,7 @@ export default function Goals() {
               display: 'flex', flexDirection: 'column', gap: '4px',
             }}>
               <div style={{
-                fontSize: '22px', fontFamily: 'Cormorant Garamond, Georgia, serif',
+                fontSize: '28px', fontFamily: 'Cormorant Garamond, Georgia, serif',
                 color: 'hsl(38 20% 80%)', fontWeight: 300, letterSpacing: '0.01em', lineHeight: 1,
               }}>
                 {lifeArea?.label}
@@ -168,16 +168,16 @@ export default function Goals() {
               <div style={{ display: 'flex', gap: '16px', marginTop: '4px' }}>
                 {totalAnnual > 0 && (
                   <div>
-                    <span style={{ fontSize: '9px', letterSpacing: '0.1em', color: 'hsl(38 15% 42%)', textTransform: 'uppercase' }}>Annual · </span>
-                    <span style={{ fontSize: '11px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 40% 58%)' }}>
+                    <span style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'hsl(38 15% 42%)', textTransform: 'uppercase' }}>Annual · </span>
+                    <span style={{ fontSize: '13px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 40% 58%)' }}>
                       ${totalAnnual.toLocaleString()}
                     </span>
                   </div>
                 )}
                 {totalOneTime > 0 && (
                   <div>
-                    <span style={{ fontSize: '9px', letterSpacing: '0.1em', color: 'hsl(38 15% 42%)', textTransform: 'uppercase' }}>One-time · </span>
-                    <span style={{ fontSize: '11px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 40% 58%)' }}>
+                    <span style={{ fontSize: '11px', letterSpacing: '0.1em', color: 'hsl(38 15% 42%)', textTransform: 'uppercase' }}>One-time · </span>
+                    <span style={{ fontSize: '13px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 40% 58%)' }}>
                       ${totalOneTime.toLocaleString()}
                     </span>
                   </div>
@@ -190,10 +190,10 @@ export default function Goals() {
               position: 'absolute', top: '16px', right: '16px',
               textAlign: 'right',
             }}>
-              <div style={{ fontSize: '9px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'hsl(38 15% 38%)' }}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'hsl(38 15% 38%)' }}>
                 Goals
               </div>
-              <div style={{ fontSize: '18px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 35% 52%)', lineHeight: 1.2 }}>
+              <div style={{ fontSize: '22px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 35% 52%)', lineHeight: 1.2 }}>
                 {currentGoals.length}
               </div>
             </div>

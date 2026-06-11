@@ -32,7 +32,7 @@ export default function TopNav({ householdTotal = 2800000 }) {
           <span style={{ fontSize: '11px', color: 'hsl(38 50% 60%)' }}>◎</span>
         </div>
         <span style={{
-          fontSize: '11px', letterSpacing: '0.18em', textTransform: 'uppercase',
+          fontSize: '13px', letterSpacing: '0.18em', textTransform: 'uppercase',
           color: 'hsl(38 18% 62%)', fontFamily: 'Inter, sans-serif', fontWeight: 500,
         }}>
           Parallax
@@ -54,7 +54,7 @@ export default function TopNav({ householdTotal = 2800000 }) {
       {/* Right side */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px', minWidth: '180px', justifyContent: 'flex-end' }}>
         <span style={{
-          fontSize: '10px', letterSpacing: '0.08em',
+          fontSize: '12px', letterSpacing: '0.08em',
           color: 'hsl(38 15% 42%)', fontFamily: 'Inter, sans-serif',
           textTransform: 'uppercase',
         }}>
@@ -66,7 +66,7 @@ export default function TopNav({ householdTotal = 2800000 }) {
           background: 'hsl(28 12% 14%)',
           border: '1px solid hsl(38 30% 32% / 0.6)',
           cursor: 'pointer',
-          fontSize: '10px', letterSpacing: '0.12em', textTransform: 'uppercase',
+          fontSize: '12px', letterSpacing: '0.12em', textTransform: 'uppercase',
           color: 'hsl(38 45% 60%)', fontFamily: 'Inter, sans-serif', fontWeight: 600,
         }}>
           <span style={{ fontSize: '8px' }}>▶</span>

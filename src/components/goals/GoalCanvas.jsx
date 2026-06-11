@@ -95,7 +95,7 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
 
       <foreignObject x={pos.x - 34} y={pos.y - 20} width={68} height={40} style={{ pointerEvents: 'none' }}>
         <div xmlns="http://www.w3.org/1999/xhtml" style={{
-          textAlign: 'center', fontSize: '9.5px', fontWeight: 500,
+          textAlign: 'center', fontSize: '12px', fontWeight: 500,
           color: isSelected ? 'hsl(38 65% 72%)' : 'hsl(38 18% 68%)',
           lineHeight: '1.3', fontFamily: 'Inter, sans-serif',
           letterSpacing: '0.01em',
@@ -110,8 +110,8 @@ function GoalNode({ goal, pos, isSelected, onClick, isNew, index }) {
 
       {goal && goal.ageStart && !isNew && (
         <text
-          x={pos.x} y={pos.y + 30}
-          textAnchor="middle" fontSize="7.5"
+          x={pos.x} y={pos.y + 32}
+          textAnchor="middle" fontSize="10"
           fill="hsl(38 20% 42%)"
           fontFamily="Courier Prime, monospace"
         >
@@ -138,7 +138,7 @@ function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY 
       transition={{ ...SPRING_BLOOM, delay: index * 0.035 }}
     >
       <motion.rect
-        x={pos.x - 28} y={pos.y - 11} width={56} height={22} rx={11}
+        x={pos.x - 34} y={pos.y - 13} width={68} height={26} rx={13}
         fill={isHighlighted ? 'hsl(38 30% 18%)' : 'hsl(28 10% 13%)'}
         stroke={isHighlighted ? 'hsl(38 50% 55% / 0.7)' : locked ? 'hsl(38 15% 25% / 0.4)' : 'hsl(38 20% 28% / 0.5)'}
         strokeWidth={isHighlighted ? 1 : 0.75}
@@ -153,11 +153,11 @@ function InputNode({ node, pos, isHighlighted, onClick, index, originX, originY 
         onClick={!locked ? onClick : undefined}
       />
       {locked && (
-        <text x={pos.x - 16} y={pos.y + 4} fontSize="7" fill="hsl(38 20% 38%)" fontFamily="Inter, sans-serif">⬡</text>
+        <text x={pos.x - 18} y={pos.y + 5} fontSize="9" fill="hsl(38 20% 38%)" fontFamily="Inter, sans-serif">⬡</text>
       )}
       <text
-        x={locked ? pos.x - 4 : pos.x} y={pos.y + 4}
-        textAnchor="middle" fontSize="8.5"
+        x={locked ? pos.x - 4 : pos.x} y={pos.y + 5}
+        textAnchor="middle" fontSize="11"
         fill={isHighlighted ? 'hsl(38 60% 68%)' : locked ? 'hsl(38 15% 40%)' : 'hsl(38 15% 58%)'}
         fontFamily="Inter, sans-serif"
         fontWeight={isHighlighted ? 600 : 400}
@@ -265,11 +265,11 @@ export default function GoalCanvas({
           style={{ filter: 'drop-shadow(0 0 20px hsl(38 50% 58% / 0.16))' }}
         />
         <circle cx={cx} cy={cy} r={50} fill="none" stroke="hsl(38 50% 58% / 0.09)" strokeWidth={6} />
-        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="12" fill="hsl(38 55% 64%)"
+        <text x={cx} y={cy - 5} textAnchor="middle" fontSize="16" fill="hsl(38 55% 64%)"
           fontFamily="Cormorant Garamond, Georgia, serif" fontWeight={500}>
           {lifeArea?.icon || '✦'}
         </text>
-        <text x={cx} y={cy + 11} textAnchor="middle" fontSize="8.5" fill="hsl(38 18% 58%)"
+        <text x={cx} y={cy + 14} textAnchor="middle" fontSize="11" fill="hsl(38 18% 58%)"
           fontFamily="Inter, sans-serif" letterSpacing="0.14em">
           {lifeArea?.label?.toUpperCase() || ''}
         </text>
