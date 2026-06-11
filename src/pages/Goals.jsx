@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import TopNav from '../components/goals/TopNav';
 import LifeAreaRail from '../components/goals/LifeAreaRail';
@@ -16,6 +16,23 @@ export default function Goals() {
   const [highlightedField, setHighlightedField] = useState(null);
   const [savedGoalIds, setSavedGoalIds] = useState(new Set());
   const [justSaved, setJustSaved] = useState(false);
+  const canvasContainerRef = useRef(null);
+  const [canvasSize, setCanvasSize] = useState({ w: 760, h: 600 });
+
+  useEffect(() => {
+    const el = canvasContainerRef.current;
+    if (!el) return;
+    const obs = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        const { width, height } = entry.contentRect;
+        if (width > 0 && height > 0) {
+          setCanvasSize({ w: Math.floor(width), h: Math.floor(height) });
+        }
+      }
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   const currentGoals = allGoals[activeArea] || [];
   const lifeArea = LIFE_AREAS.find(a => a.id === activeArea);
@@ -118,7 +135,7 @@ export default function Goals() {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
 
           {/* Canvas area */}
-          <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          <div ref={canvasContainerRef} style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
 
             {/* Background grid lines (decorative) */}
             <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', opacity: 0.06 }}>
@@ -148,8 +165,8 @@ export default function Goals() {
                   highlightedField={highlightedField}
                   onHighlightField={setHighlightedField}
                   onGoalChange={handleGoalChange}
-                  width={760}
-                  height={700}
+                  width={canvasSize.w}
+                  height={canvasSize.h}
                 />
               </motion.div>
             </AnimatePresence>

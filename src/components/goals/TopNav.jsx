@@ -16,7 +16,7 @@ export default function TopNav({ householdTotal = 2800000 }) {
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       padding: '0 28px',
-      height: '52px',
+      height: '60px',
       borderBottom: '1px solid hsl(28 10% 16% / 0.7)',
       background: 'hsl(28 15% 7% / 0.95)',
       backdropFilter: 'blur(8px)',
@@ -27,7 +27,7 @@ export default function TopNav({ householdTotal = 2800000 }) {
         <img
           src="https://media.base44.com/images/public/6a2aeae97467619d42bebb47/55f911c3d_image.png"
           alt="Parallax"
-          style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
+          style={{ height: '44px', width: 'auto', objectFit: 'contain' }}
         />
       </div>
 
