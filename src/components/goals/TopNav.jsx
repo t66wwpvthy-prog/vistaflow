@@ -23,20 +23,12 @@ export default function TopNav({ householdTotal = 2800000 }) {
       position: 'sticky', top: 0, zIndex: 50,
     }}>
       {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '120px' }}>
-        <div style={{
-          width: '28px', height: '28px', borderRadius: '50%',
-          border: '1.5px solid hsl(38 40% 40%)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <span style={{ fontSize: '11px', color: 'hsl(38 50% 60%)' }}>◎</span>
-        </div>
-        <span style={{
-          fontSize: '13px', letterSpacing: '0.18em', textTransform: 'uppercase',
-          color: 'hsl(38 18% 62%)', fontFamily: 'Inter, sans-serif', fontWeight: 500,
-        }}>
-          Parallax
-        </span>
+      <div style={{ display: 'flex', alignItems: 'center', minWidth: '120px' }}>
+        <img
+          src="https://media.base44.com/images/public/6a2aeae97467619d42bebb47/55f911c3d_image.png"
+          alt="Parallax"
+          style={{ height: '38px', width: 'auto', objectFit: 'contain' }}
+        />
       </div>
 
       {/* Nav links */}

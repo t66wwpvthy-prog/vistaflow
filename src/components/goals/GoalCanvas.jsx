@@ -178,15 +178,15 @@ export default function GoalCanvas({
   highlightedField,
   onHighlightField,
   onGoalChange,
-  width = 580,
-  height = 450,
+  width = 760,
+  height = 700,
 }) {
   const svgRef = useRef(null);
   const [popupGoal, setPopupGoal] = useState(null);
   const [popupPos, setPopupPos] = useState(null);
 
   const cx = width / 2;
-  const cy = height / 2 - 80;
+  const cy = height / 2 - 60;
 
   const visibleGoals = goals.slice(0, 5);
   const selectedGoal = goals.find(g => g.id === selectedGoalId);

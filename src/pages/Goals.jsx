@@ -148,8 +148,8 @@ export default function Goals() {
                   highlightedField={highlightedField}
                   onHighlightField={setHighlightedField}
                   onGoalChange={handleGoalChange}
-                  width={560}
-                  height={560}
+                  width={760}
+                  height={700}
                 />
               </motion.div>
             </AnimatePresence>
