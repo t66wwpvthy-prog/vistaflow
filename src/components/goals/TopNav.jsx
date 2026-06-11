@@ -27,7 +27,7 @@ export default function TopNav({ householdTotal = 2800000 }) {
         <img
           src="https://media.base44.com/images/public/6a2aeae97467619d42bebb47/55f911c3d_image.png"
           alt="Parallax"
-          style={{ height: '44px', width: 'auto', objectFit: 'contain' }}
+          style={{ height: '56px', width: 'auto', objectFit: 'contain' }}
         />
       </div>
 

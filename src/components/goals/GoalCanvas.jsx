@@ -213,8 +213,8 @@ export default function GoalCanvas({
   };
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <svg ref={svgRef} width={width} height={height} style={{ overflow: 'visible' }}>
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <svg ref={svgRef} width={width} height={height} style={{ position: 'absolute', top: 0, left: 0, overflow: 'visible' }}>
         <defs>
           <radialGradient id="rootGlow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="hsl(38 50% 58%)" stopOpacity="0.18" />
