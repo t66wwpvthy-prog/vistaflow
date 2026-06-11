@@ -47,7 +47,7 @@ export default function AgeRail({ allGoals, selectedGoalId, onSelectGoal, curren
         padding: '0 16px', marginBottom: '8px',
       }}>
         <span style={{
-          fontSize: '9px', letterSpacing: '0.16em', textTransform: 'uppercase',
+          fontSize: '11px', letterSpacing: '0.16em', textTransform: 'uppercase',
           color: 'hsl(38 28% 40%)', fontFamily: 'Inter, sans-serif', fontWeight: 500,
         }}>
           Age Rail
@@ -55,7 +55,7 @@ export default function AgeRail({ allGoals, selectedGoalId, onSelectGoal, curren
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           {selectedGoal && (
             <span style={{
-              fontSize: '9px', letterSpacing: '0.06em',
+              fontSize: '11px', letterSpacing: '0.06em',
               color: selectedGoal.color,
               fontFamily: 'Courier Prime, monospace',
               opacity: 0.85,
@@ -64,7 +64,7 @@ export default function AgeRail({ allGoals, selectedGoalId, onSelectGoal, curren
             </span>
           )}
           <span style={{
-            fontSize: '9px', color: 'hsl(38 15% 34%)',
+            fontSize: '11px', color: 'hsl(38 15% 34%)',
             fontFamily: 'Courier Prime, monospace', letterSpacing: '0.06em',
           }}>
             ages {AGE_START}–{AGE_END}
@@ -191,7 +191,7 @@ export default function AgeRail({ allGoals, selectedGoalId, onSelectGoal, curren
                   position: 'absolute',
                   left: `${pct}%`,
                   transform: 'translateX(-50%)',
-                  fontSize: '8.5px',
+                  fontSize: '11px',
                   fontFamily: 'Courier Prime, monospace',
                   color: isCurrent ? 'hsl(38 55% 58%)' : 'hsl(38 12% 34%)',
                   letterSpacing: '0.04em',
@@ -208,7 +208,7 @@ export default function AgeRail({ allGoals, selectedGoalId, onSelectGoal, curren
             position: 'absolute',
             left: `${currentAgePct}%`,
             transform: 'translateX(-50%)',
-            fontSize: '8px',
+            fontSize: '11px',
             fontFamily: 'Inter, sans-serif',
             color: 'hsl(38 50% 58%)',
             letterSpacing: '0.06em',

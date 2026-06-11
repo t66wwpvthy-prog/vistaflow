@@ -52,7 +52,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
         onKeyDown={handleKeyDown}
       >
         <div style={{
-          fontSize: '8.5px', letterSpacing: '0.14em', textTransform: 'uppercase',
+          fontSize: '11px', letterSpacing: '0.14em', textTransform: 'uppercase',
           color: 'hsl(38 30% 42%)', marginBottom: '10px', fontFamily: 'Inter, sans-serif',
         }}>
           Edit Goal
@@ -60,7 +60,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
 
         <div style={{ marginBottom: '10px' }}>
           <div style={{
-            fontSize: '8px', letterSpacing: '0.12em', textTransform: 'uppercase',
+            fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase',
             color: 'hsl(38 25% 38%)', marginBottom: '4px', fontFamily: 'Inter, sans-serif',
           }}>Name</div>
           <input
@@ -73,7 +73,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
               border: '1px solid hsl(38 25% 24% / 0.8)',
               borderRadius: '3px',
               color: 'hsl(38 20% 80%)',
-              fontSize: '11px',
+              fontSize: '14px',
               fontFamily: 'Inter, sans-serif',
               padding: '6px 8px',
               outline: 'none',
@@ -85,7 +85,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
 
         <div style={{ marginBottom: '12px' }}>
           <div style={{
-            fontSize: '8px', letterSpacing: '0.12em', textTransform: 'uppercase',
+            fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase',
             color: 'hsl(38 25% 38%)', marginBottom: '4px', fontFamily: 'Inter, sans-serif',
           }}>Description</div>
           <textarea
@@ -99,7 +99,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
               border: '1px solid hsl(38 25% 24% / 0.8)',
               borderRadius: '3px',
               color: 'hsl(38 20% 72%)',
-              fontSize: '10.5px',
+              fontSize: '13px',
               fontFamily: 'Inter, sans-serif',
               padding: '6px 8px',
               outline: 'none',
@@ -120,7 +120,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
               border: '1px solid hsl(38 45% 36% / 0.7)',
               borderRadius: '3px',
               color: 'hsl(38 55% 68%)',
-              fontSize: '9px', letterSpacing: '0.1em', textTransform: 'uppercase',
+              fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase',
               fontFamily: 'Inter, sans-serif', fontWeight: 600,
               cursor: 'pointer',
             }}
@@ -135,7 +135,7 @@ export default function GoalEditPopup({ goal, pos, svgRef, onSave, onClose }) {
               border: '1px solid hsl(38 15% 22%)',
               borderRadius: '3px',
               color: 'hsl(38 15% 46%)',
-              fontSize: '9px', letterSpacing: '0.1em', textTransform: 'uppercase',
+              fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase',
               fontFamily: 'Inter, sans-serif',
               cursor: 'pointer',
             }}

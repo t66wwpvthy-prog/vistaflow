@@ -23,14 +23,14 @@ export default function LifeAreaRail({ activeArea, onSelect, goalCounts }) {
           >
             <div className="flex items-center gap-3">
               <span style={{
-                fontSize: '10px',
+                fontSize: '14px',
                 color: isActive ? 'hsl(38 55% 62%)' : 'hsl(38 18% 42%)',
                 transition: 'color 0.2s',
               }}>
                 {area.icon}
               </span>
               <span style={{
-                fontSize: '11px',
+                fontSize: '13px',
                 fontWeight: isActive ? 500 : 400,
                 letterSpacing: '0.04em',
                 color: isActive ? 'hsl(38 20% 82%)' : 'hsl(38 12% 52%)',
@@ -42,7 +42,7 @@ export default function LifeAreaRail({ activeArea, onSelect, goalCounts }) {
             </div>
             {count > 0 && (
               <span style={{
-                fontSize: '9px',
+                fontSize: '12px',
                 fontFamily: 'Courier Prime, monospace',
                 color: isActive ? 'hsl(38 45% 55%)' : 'hsl(38 15% 38%)',
                 letterSpacing: '0.05em',
@@ -67,10 +67,10 @@ export default function LifeAreaRail({ activeArea, onSelect, goalCounts }) {
           const area = LIFE_AREAS.find(a => a.id === areaId);
           return (
             <div key={areaId} className="flex items-center justify-between py-1">
-              <span style={{ fontSize: '10px', color: 'hsl(38 12% 48%)', letterSpacing: '0.04em' }}>
+              <span style={{ fontSize: '12px', color: 'hsl(38 12% 48%)', letterSpacing: '0.04em' }}>
                 {area?.label}
               </span>
-              <span style={{ fontSize: '10px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 35% 50%)' }}>
+              <span style={{ fontSize: '12px', fontFamily: 'Courier Prime, monospace', color: 'hsl(38 35% 50%)' }}>
                 {count}
               </span>
             </div>

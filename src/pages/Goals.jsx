@@ -202,7 +202,7 @@ export default function Goals() {
             {selectedGoalId && (
               <div style={{
                 position: 'absolute', bottom: '12px', left: '50%', transform: 'translateX(-50%)',
-                fontSize: '9px', color: 'hsl(38 12% 36%)', letterSpacing: '0.1em',
+                fontSize: '13px', color: 'hsl(38 12% 36%)', letterSpacing: '0.1em',
                 fontFamily: 'Inter, sans-serif', textAlign: 'center',
                 pointerEvents: 'none',
               }}>
