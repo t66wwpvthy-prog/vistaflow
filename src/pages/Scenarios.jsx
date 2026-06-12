@@ -5,7 +5,7 @@ import TopNav from '../components/goals/TopNav';
 const SCENARIOS = [
   {
     id: 'baseline',
-    name: 'Baseline',
+    name: 'BASELINE',
     success: 83.1,
     delta: null,
     stats: {
@@ -16,15 +16,17 @@ const SCENARIOS = [
       allocation: { num: 100, denom: 0 },
       savingsYr: 62125,
       pension: 62,
-      kitchen: { name: 'Kitchen renovation', age: '40-50', amount: 10308 },
-      kitchenPool: { name: 'Kitchen + pool', age: '41-48', amount: 25032 },
-      pool: { name: 'Pool', age: '46-90', amount: 14724 },
+      goals: [
+        { amount: 10308 },
+        { amount: 25032 },
+        { amount: 14724 },
+      ],
       annual: 50064,
     }
   },
   {
     id: 'scenario-b',
-    name: 'Scenario B',
+    name: 'SCENARIO B',
     success: 96.7,
     delta: '+13.6 pts',
     stats: {
@@ -35,15 +37,17 @@ const SCENARIOS = [
       allocation: { num: 100, denom: 0 },
       savingsYr: 62125,
       pension: 65,
-      kitchen: { name: 'Kitchen renovation', age: '40-50', amount: 10308 },
-      kitchenPool: { name: 'Kitchen + pool', age: '41-48', amount: 25032 },
-      pool: { name: 'Pool', age: '46-90', amount: 14724 },
+      goals: [
+        { amount: 10308 },
+        { amount: 25032 },
+        { amount: 14724 },
+      ],
       annual: 50064,
     }
   },
   {
     id: 'aggressive',
-    name: 'Aggressive',
+    name: 'AGGRESSIVE',
     success: 82.3,
     delta: '-0.8 pts',
     stats: {
@@ -54,150 +58,298 @@ const SCENARIOS = [
       allocation: { num: 90, denom: 10 },
       savingsYr: 62125,
       pension: 62,
-      kitchen: { name: 'Kitchen renovation', age: '40-50', amount: 10308 },
-      kitchenPool: { name: 'Kitchen + pool', age: '41-48', amount: 25032 },
-      pool: { name: 'Pool', age: '46-90', amount: 14724 },
+      goals: [
+        { amount: 10308 },
+        { amount: 25032 },
+        { amount: 14724 },
+      ],
       annual: 50064,
     }
   },
 ];
 
+const glassPanel = {
+  background: 'linear-gradient(135deg, rgba(27, 39, 49, 0.48) 0%, rgba(27, 39, 49, 0.45) 100%)',
+  backdropFilter: 'blur(22px) saturate(115%)',
+  border: '1px solid rgba(244, 220, 178, 0.18)',
+  boxShadow: '0 24px 70px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(232,189,115,0.06)',
+};
+
+function SuccessGauge({ success }) {
+  const circumference = 2 * Math.PI * 45;
+  const offset = circumference - (success / 100) * circumference;
+
+  return (
+    <div style={{ position: 'relative', width: '110px', height: '110px', margin: '0 auto' }}>
+      <svg style={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }} viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(244, 220, 178, 0.08)" strokeWidth="2" />
+        <circle
+          cx="50" cy="50" r="45" fill="none"
+          stroke="#8EF0A0"
+          strokeWidth="2.5"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          style={{
+            filter: 'drop-shadow(0 0 8px rgba(142, 240, 160, 0.35))',
+            transition: 'stroke-dashoffset 0.8s ease-out',
+          }}
+        />
+      </svg>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <div style={{
+          fontSize: '18px',
+          fontWeight: 600,
+          color: '#8EF0A0',
+          fontFamily: 'Courier Prime, monospace',
+        }}>
+          {success.toFixed(1)}%
+        </div>
+        <div style={{
+          fontSize: '9px',
+          color: 'rgba(244, 232, 208, 0.6)',
+          letterSpacing: '0.12em',
+          textTransform: 'uppercase',
+          marginTop: '2px',
+        }}>
+          Success
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ScenarioCard({ scenario, index }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.4 }}
+      transition={{ delay: index * 0.12, duration: 0.5, ease: 'easeOut' }}
       style={{
-        background: 'linear-gradient(135deg, hsl(215 32% 22% / 0.65) 0%, hsl(215 28% 18% / 0.65) 100%)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid hsl(215 40% 35% / 0.4)',
-        borderRadius: '12px',
-        padding: '20px',
+        ...glassPanel,
+        borderRadius: '18px',
+        padding: '24px 20px',
         flex: 1,
-        minWidth: '200px',
+        minWidth: '280px',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      {/* Header with menu */}
+      {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
         <div>
           <div style={{
-            fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase',
-            color: 'hsl(100 60% 50% / 0.8)', fontWeight: 500, marginBottom: '2px',
-            display: 'flex', alignItems: 'center', gap: '4px',
+            fontSize: '10px',
+            letterSpacing: '0.18em',
+            textTransform: 'uppercase',
+            color: '#8EF0A0',
+            fontWeight: 500,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
           }}>
-            <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: 'hsl(100 60% 50%)' }} />
+            <span style={{
+              display: 'inline-block',
+              width: '5px',
+              height: '5px',
+              borderRadius: '50%',
+              background: '#8EF0A0',
+            }} />
             {scenario.name}
           </div>
         </div>
         <button style={{
-          background: 'none', border: 'none', color: 'hsl(215 20% 50%)',
-          cursor: 'pointer', fontSize: '16px', padding: 0,
-        }}>⋯</button>
+          background: 'none',
+          border: 'none',
+          color: 'rgba(244, 232, 208, 0.4)',
+          cursor: 'pointer',
+          fontSize: '18px',
+          padding: 0,
+          transition: 'color 0.2s',
+        }}
+        onMouseEnter={(e) => e.target.style.color = 'rgba(244, 232, 208, 0.7)'}
+        onMouseLeave={(e) => e.target.style.color = 'rgba(244, 232, 208, 0.4)'}
+        >
+          ⋯
+        </button>
       </div>
 
-      {/* Success circle */}
+      {/* Success Gauge */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
-        <div style={{
-          position: 'relative',
-          width: '100px', height: '100px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <svg style={{ position: 'absolute', inset: 0, transform: 'rotate(-90deg)' }} viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="hsl(215 20% 25%)" strokeWidth="2" />
-            <circle
-              cx="50" cy="50" r="45" fill="none"
-              stroke="hsl(100 60% 50%)" strokeWidth="2.5"
-              strokeDasharray={`${(scenario.success / 100) * 283} 283`}
-              strokeLinecap="round"
-            />
-          </svg>
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              fontSize: '20px', fontWeight: 600,
-              color: 'hsl(100 60% 50%)', fontFamily: 'Courier Prime, monospace',
-            }}>
-              {scenario.success.toFixed(1)}%
-            </div>
-            <div style={{
-              fontSize: '10px', color: 'hsl(215 20% 50%)', letterSpacing: '0.1em',
-              textTransform: 'uppercase', marginTop: '2px',
-            }}>
-              Success
-            </div>
-          </div>
-        </div>
+        <SuccessGauge success={scenario.success} />
       </div>
 
-      {/* Delta if present */}
+      {/* Delta */}
       {scenario.delta && (
         <div style={{
-          textAlign: 'center', fontSize: '11px', color: 'hsl(100 50% 60%)',
-          marginBottom: '12px', fontFamily: 'Courier Prime, monospace',
+          textAlign: 'center',
+          fontSize: '11px',
+          color: '#8EF0A0',
+          marginBottom: '14px',
+          fontFamily: 'Courier Prime, monospace',
+          letterSpacing: '0.05em',
         }}>
           {scenario.delta}
         </div>
       )}
 
-      {/* Stats section */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px', color: 'hsl(215 20% 70%)' }}>
+      {/* Divider */}
+      <div style={{
+        height: '1px',
+        background: 'linear-gradient(90deg, transparent, rgba(244, 220, 178, 0.12), transparent)',
+        marginBottom: '14px',
+      }} />
+
+      {/* Stats */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px' }}>
+        {/* Retirement Age */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ color: 'hsl(215 20% 50%)' }}>Baseline</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <span>{scenario.stats.retirementAge}</span>
-          <div style={{ display: 'flex', gap: '4px', flex: 1 }}>
-            <button style={{ background: 'hsl(215 25% 20%)', border: 'none', color: 'hsl(215 20% 50%)', width: '20px', height: '20px', borderRadius: '3px', cursor: 'pointer', fontSize: '10px' }}>−</button>
-            <button style={{ background: 'hsl(215 25% 20%)', border: 'none', color: 'hsl(215 20% 50%)', width: '20px', height: '20px', borderRadius: '3px', cursor: 'pointer', fontSize: '10px' }}>+</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ color: 'rgba(244, 232, 208, 0.68)' }}>60</span>
+          </div>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button style={{
+              background: 'rgba(27, 39, 49, 0.6)',
+              border: '1px solid rgba(244, 220, 178, 0.12)',
+              color: 'rgba(244, 232, 208, 0.5)',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              fontSize: '10px',
+            }}>−</button>
+            <button style={{
+              background: 'rgba(27, 39, 49, 0.6)',
+              border: '1px solid rgba(244, 220, 178, 0.12)',
+              color: 'rgba(244, 232, 208, 0.5)',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              fontSize: '10px',
+            }}>+</button>
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <span>{scenario.stats.startAge}</span>
-          <div style={{ display: 'flex', gap: '4px', flex: 1 }}>
-            <button style={{ background: 'hsl(215 25% 20%)', border: 'none', color: 'hsl(215 20% 50%)', width: '20px', height: '20px', borderRadius: '3px', cursor: 'pointer', fontSize: '10px' }}>−</button>
-            <button style={{ background: 'hsl(215 25% 20%)', border: 'none', color: 'hsl(215 20% 50%)', width: '20px', height: '20px', borderRadius: '3px', cursor: 'pointer', fontSize: '10px' }}>+</button>
+        {/* Start Age */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ color: 'rgba(244, 232, 208, 0.68)' }}>67</span>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button style={{
+              background: 'rgba(27, 39, 49, 0.6)',
+              border: '1px solid rgba(244, 220, 178, 0.12)',
+              color: 'rgba(244, 232, 208, 0.5)',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              fontSize: '10px',
+            }}>−</button>
+            <button style={{
+              background: 'rgba(27, 39, 49, 0.6)',
+              border: '1px solid rgba(244, 220, 178, 0.12)',
+              color: 'rgba(244, 232, 208, 0.5)',
+              width: '20px',
+              height: '20px',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              fontSize: '10px',
+            }}>+</button>
           </div>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/* Lifestyle Spending */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          color: 'rgba(244, 232, 208, 0.68)',
+          paddingTop: '4px',
+        }}>
           <span>$ 12,000</span>
-          <span style={{ color: 'hsl(215 20% 50%)' }}>/mo</span>
+          <span style={{ color: 'rgba(174, 183, 189, 0.72)' }}>/mo</span>
         </div>
 
-        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+        {/* One-Time Event */}
+        <div style={{
+          display: 'flex',
+          gap: '4px',
+          alignItems: 'center',
+          color: 'rgba(244, 232, 208, 0.68)',
+        }}>
           <span>$ 0</span>
-          <span style={{ color: 'hsl(215 20% 50%)' }}>@ age</span>
+          <span style={{ color: 'rgba(174, 183, 189, 0.72)' }}>@ age</span>
           <span>70</span>
         </div>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', color: 'hsl(215 20% 50%)', paddingBottom: '8px', borderBottom: '1px solid hsl(215 25% 20%)' }}>
-          <span>100 / 0</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <span>$ 62,125</span>
-          <span style={{ color: 'hsl(215 20% 50%)' }}>/yr</span>
-        </div>
-
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <span>$ {scenario.stats.pension}</span>
-        </div>
-
-        <div style={{ fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '4px', paddingTop: '4px', borderTop: '1px solid hsl(215 25% 20%)', marginTop: '4px' }}>
-          <div style={{ color: 'hsl(215 20% 50%)' }}>$ 10,308 <span style={{ fontSize: '9px' }}>/yr</span></div>
-          <div style={{ color: 'hsl(215 20% 50%)' }}>$ 25,032 <span style={{ fontSize: '9px' }}>/yr</span></div>
-          <div style={{ color: 'hsl(215 20% 50%)' }}>$ 14,724 <span style={{ fontSize: '9px' }}>/yr</span></div>
-        </div>
-
+        {/* Allocation */}
         <div style={{
-          marginTop: '8px', paddingTop: '8px', borderTop: '1px solid hsl(215 25% 20%)',
-          display: 'flex', justifyContent: 'space-between', fontWeight: 500,
-          color: 'hsl(215 25% 75%)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          color: 'rgba(174, 183, 189, 0.72)',
+          paddingBottom: '8px',
+          borderBottom: '1px solid rgba(244, 220, 178, 0.08)',
+        }}>
+          <span style={{ fontSize: '11px' }}>100 / 0</span>
+        </div>
+
+        {/* Savings */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          color: 'rgba(244, 232, 208, 0.68)',
+          paddingTop: '4px',
+        }}>
+          <span>$ 62,125</span>
+          <span style={{ color: 'rgba(174, 183, 189, 0.72)' }}>/yr</span>
+        </div>
+
+        {/* Pension */}
+        <div style={{ color: 'rgba(244, 232, 208, 0.68)' }}>
+          $ {scenario.stats.pension}
+        </div>
+
+        {/* Goals breakdown */}
+        <div style={{
+          fontSize: '11px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '4px',
+          paddingTop: '6px',
+          borderTop: '1px solid rgba(244, 220, 178, 0.08)',
+          marginTop: '4px',
+        }}>
+          {scenario.stats.goals.map((goal, i) => (
+            <div key={i} style={{
+              display: 'flex',
+              gap: '8px',
+              color: 'rgba(244, 232, 208, 0.68)',
+            }}>
+              <span>$ {goal.amount.toLocaleString()}</span>
+              <span style={{ color: 'rgba(174, 183, 189, 0.72)' }}>/yr</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Annual Total */}
+        <div style={{
+          marginTop: '10px',
+          paddingTop: '10px',
+          borderTop: '1px solid rgba(244, 220, 178, 0.12)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontWeight: 500,
+          color: '#F4E8D0',
+          fontSize: '13px',
         }}>
           <span>$ 50,064</span>
-          <span style={{ color: 'hsl(215 20% 50%)' }}>/yr</span>
+          <span style={{ color: 'rgba(174, 183, 189, 0.72)' }}>/yr</span>
         </div>
       </div>
     </motion.div>
@@ -205,170 +357,258 @@ function ScenarioCard({ scenario, index }) {
 }
 
 export default function Scenarios() {
-  const [expandedControl, setExpandedControl] = useState(null);
-
   return (
     <div style={{
-      display: 'flex', flexDirection: 'column',
-      height: '100vh', overflow: 'hidden',
-      background: 'linear-gradient(135deg, hsl(215 35% 18%) 0%, hsl(215 30% 12%) 50%, hsl(215 25% 10%) 100%)',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+      overflow: 'hidden',
     }}>
-      <TopNav />
+      {/* Atmospheric background */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(ellipse 140% 100% at 50% 20%, rgba(142, 200, 220, 0.08) 0%, rgba(45, 60, 80, 0.3) 30%, rgba(20, 30, 45, 0.8) 100%)',
+        zIndex: 0,
+      }} />
 
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', padding: '24px' }}>
-        {/* Left sidebar */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <TopNav />
+
         <div style={{
-          width: '220px', flexShrink: 0,
-          background: 'linear-gradient(135deg, hsl(215 32% 20% / 0.6) 0%, hsl(215 28% 16% / 0.6) 100%)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid hsl(215 40% 35% / 0.3)',
-          borderRadius: '12px',
-          padding: '16px',
-          marginRight: '20px',
-          overflow: 'hidden', overflowY: 'auto',
+          display: 'flex',
+          flex: 1,
+          overflow: 'hidden',
+          padding: '32px 28px',
+          gap: '24px',
         }}>
-          <div style={{
-            fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase',
-            color: 'hsl(40 70% 60%)', fontWeight: 600, marginBottom: '12px',
-          }}>
-            Scenarios
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <button style={{
-              width: '100%', padding: '8px 12px', borderRadius: '6px',
-              background: 'hsl(215 25% 22%)',
-              border: '1px solid hsl(215 35% 30% / 0.5)',
-              color: 'hsl(215 20% 70%)',
-              fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
-              cursor: 'pointer', transition: 'all 0.2s',
+          {/* Left Sidebar */}
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            style={{
+              ...glassPanel,
+              borderRadius: '18px',
+              width: '210px',
+              flexShrink: 0,
+              padding: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
             }}
-            onMouseEnter={(e) => e.target.style.background = 'hsl(215 25% 26%)'}
-            onMouseLeave={(e) => e.target.style.background = 'hsl(215 25% 22%)'}
-            >
-              + Add
-            </button>
-
-            <button style={{
-              width: '100%', padding: '8px 12px', borderRadius: '6px',
-              background: 'transparent',
-              border: '1px solid hsl(215 35% 28%)',
-              color: 'hsl(215 20% 60%)',
-              fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
-              cursor: 'pointer',
-            }}>
-              ⚡ Solve...
-            </button>
-
-            <button style={{
-              width: '100%', padding: '8px 12px', borderRadius: '6px',
-              background: 'transparent',
-              border: '1px solid hsl(215 35% 28%)',
-              color: 'hsl(215 20% 60%)',
-              fontSize: '11px', fontWeight: 500, letterSpacing: '0.1em', textTransform: 'uppercase',
-              cursor: 'pointer',
-            }}>
-              ↻ Reset
-            </button>
-          </div>
-
-          <div style={{ borderTop: '1px solid hsl(215 25% 22%)', marginTop: '16px', paddingTop: '16px' }}>
-            {[
-              { icon: '🎯', label: 'Retirement Age' },
-              { icon: '🔢', label: 'Start Age' },
-              { icon: '💰', label: 'Lifestyle Spending' },
-              { icon: '📍', label: 'One-Time Event' },
-              { icon: '📊', label: 'Allocation' },
-              { icon: '💾', label: 'Savings / Yr' },
-              { icon: '🏦', label: 'Pension' },
-            ].map((item) => (
-              <button
-                key={item.label}
-                onClick={() => setExpandedControl(expandedControl === item.label ? null : item.label)}
-                style={{
-                  width: '100%', padding: '8px 12px', textAlign: 'left',
-                  background: 'transparent', border: 'none',
-                  color: 'hsl(215 20% 65%)',
-                  fontSize: '11px', fontWeight: 500, letterSpacing: '0.08em',
-                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px',
-                  marginTop: '6px', transition: 'color 0.2s',
-                }}
-                onMouseEnter={(e) => e.target.style.color = 'hsl(215 20% 75%)'}
-                onMouseLeave={(e) => e.target.style.color = 'hsl(215 20% 65%)'}
-              >
-                <span>{item.icon}</span>
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          <div style={{ borderTop: '1px solid hsl(215 25% 22%)', marginTop: '16px', paddingTop: '16px' }}>
+          >
+            {/* Section label */}
             <div style={{
-              fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase',
-              color: 'hsl(40 70% 60%)', fontWeight: 600, marginBottom: '8px',
-            }}>
-              Goals
-            </div>
-            <div style={{ fontSize: '11px', color: 'hsl(215 20% 60%)', lineHeight: '1.6' }}>
-              • Kitchen renovation<br/>age 40-50<br/>
-              • Kitchen + pool<br/>age 41-48<br/>
-              • Pool<br/>age 46-90
-            </div>
-          </div>
-
-          <div style={{ borderTop: '1px solid hsl(215 25% 22%)', marginTop: '16px', paddingTop: '16px' }}>
-            <div style={{
-              fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: 'hsl(215 20% 60%)', fontWeight: 500, marginBottom: '4px',
-            }}>
-              Annual Goal Spend
-            </div>
-            <div style={{
-              fontSize: '14px', fontFamily: 'Courier Prime, monospace',
-              color: 'hsl(40 70% 60%)', fontWeight: 600,
-            }}>
-              $ 50,064
-            </div>
-          </div>
-        </div>
-
-        {/* Main content */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          {/* Title */}
-          <div style={{ marginBottom: '20px' }}>
-            <div style={{
-              fontSize: '28px', fontFamily: 'Cormorant Garamond, Georgia, serif',
-              color: 'hsl(215 25% 85%)', fontWeight: 300, letterSpacing: '0.02em',
+              fontSize: '10px',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              color: '#E8BD73',
+              fontWeight: 600,
             }}>
               Scenarios
             </div>
-          </div>
 
-          {/* Scenario cards */}
-          <div style={{ display: 'flex', gap: '16px', flex: 1, overflow: 'hidden' }}>
-            {SCENARIOS.map((scenario, idx) => (
-              <ScenarioCard key={scenario.id} scenario={scenario} index={idx} />
-            ))}
+            {/* Buttons */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {['+ Add', '⚡ Solve...', '↻ Reset'].map((label) => (
+                <button
+                  key={label}
+                  style={{
+                    padding: '8px 12px',
+                    borderRadius: '5px',
+                    background: 'rgba(27, 39, 49, 0.6)',
+                    border: '1px solid rgba(244, 220, 178, 0.16)',
+                    color: 'rgba(244, 232, 208, 0.72)',
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'rgba(27, 39, 49, 0.75)';
+                    e.target.style.borderColor = 'rgba(244, 220, 178, 0.24)';
+                    e.target.style.color = '#F4E8D0';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'rgba(27, 39, 49, 0.6)';
+                    e.target.style.borderColor = 'rgba(244, 220, 178, 0.16)';
+                    e.target.style.color = 'rgba(244, 232, 208, 0.72)';
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(244, 220, 178, 0.12), transparent)',
+            }} />
+
+            {/* Controls list */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              {[
+                'Retirement Age',
+                'Start Age',
+                'Lifestyle Spending',
+                'One-Time Event',
+                'Allocation',
+                'Savings / Yr',
+                'Pension',
+              ].map((label) => (
+                <button
+                  key={label}
+                  style={{
+                    textAlign: 'left',
+                    background: 'none',
+                    border: 'none',
+                    color: 'rgba(244, 232, 208, 0.54)',
+                    fontSize: '10px',
+                    fontWeight: 400,
+                    letterSpacing: '0.08em',
+                    cursor: 'pointer',
+                    padding: '4px 0',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={(e) => e.target.style.color = 'rgba(244, 232, 208, 0.8)'}
+                  onMouseLeave={(e) => e.target.style.color = 'rgba(244, 232, 208, 0.54)'}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Divider */}
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(244, 220, 178, 0.12), transparent)',
+            }} />
+
+            {/* Goals section */}
+            <div>
+              <div style={{
+                fontSize: '9px',
+                letterSpacing: '0.16em',
+                textTransform: 'uppercase',
+                color: '#E8BD73',
+                fontWeight: 600,
+                marginBottom: '8px',
+              }}>
+                Goals
+              </div>
+              <div style={{
+                fontSize: '10px',
+                color: 'rgba(244, 232, 208, 0.54)',
+                lineHeight: '1.5',
+              }}>
+                Kitchen renovation<br />
+                Kitchen + pool<br />
+                Pool
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div style={{
+              height: '1px',
+              background: 'linear-gradient(90deg, transparent, rgba(244, 220, 178, 0.12), transparent)',
+            }} />
+
+            {/* Annual goal spend */}
+            <div>
+              <div style={{
+                fontSize: '9px',
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: 'rgba(244, 232, 208, 0.54)',
+                fontWeight: 500,
+                marginBottom: '4px',
+              }}>
+                Annual Goal Spend
+              </div>
+              <div style={{
+                fontSize: '16px',
+                fontFamily: 'Courier Prime, monospace',
+                color: '#E8BD73',
+                fontWeight: 600,
+              }}>
+                $ 50,064
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Main content */}
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            {/* Title */}
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 }}
+              style={{ marginBottom: '20px' }}
+            >
+              <div style={{
+                fontSize: '28px',
+                fontFamily: 'Cormorant Garamond, Georgia, serif',
+                color: '#F4E8D0',
+                fontWeight: 300,
+                letterSpacing: '0.02em',
+              }}>
+                Scenarios
+              </div>
+            </motion.div>
+
+            {/* Scenario cards */}
+            <div style={{ display: 'flex', gap: '16px', flex: 1, minHeight: 0 }}>
+              {SCENARIOS.map((scenario, idx) => (
+                <ScenarioCard key={scenario.id} scenario={scenario} index={idx} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Bottom suggest button */}
-      <div style={{ position: 'absolute', bottom: '24px', right: '24px' }}>
-        <button style={{
-          padding: '8px 16px', borderRadius: '4px',
-          background: 'hsl(215 30% 28%)',
-          border: '1px solid hsl(40 70% 60% / 0.4)',
-          color: 'hsl(40 70% 60%)',
-          fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
-          cursor: 'pointer',
-          display: 'flex', alignItems: 'center', gap: '6px',
-        }}
-        onMouseEnter={(e) => e.target.style.background = 'hsl(215 30% 32%)'}
-        onMouseLeave={(e) => e.target.style.background = 'hsl(215 30% 28%)'}
+        {/* Suggest button */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3 }}
+          style={{
+            position: 'fixed',
+            bottom: '28px',
+            right: '28px',
+            zIndex: 10,
+          }}
         >
-          ★ Suggest
-        </button>
+          <button style={{
+            padding: '10px 18px',
+            borderRadius: '6px',
+            background: 'linear-gradient(135deg, rgba(232, 189, 115, 0.22) 0%, rgba(232, 189, 115, 0.12) 100%)',
+            border: '1px solid rgba(232, 189, 115, 0.32)',
+            color: '#E8BD73',
+            fontSize: '10px',
+            fontWeight: 600,
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'all 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = 'linear-gradient(135deg, rgba(232, 189, 115, 0.32) 0%, rgba(232, 189, 115, 0.18) 100%)';
+            e.target.style.borderColor = 'rgba(232, 189, 115, 0.48)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'linear-gradient(135deg, rgba(232, 189, 115, 0.22) 0%, rgba(232, 189, 115, 0.12) 100%)';
+            e.target.style.borderColor = 'rgba(232, 189, 115, 0.32)';
+          }}
+          >
+            ★ Suggest
+          </button>
+        </motion.div>
       </div>
     </div>
   );
